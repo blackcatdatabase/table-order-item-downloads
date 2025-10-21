@@ -73,9 +73,9 @@ erDiagram
     BINARY(32) ip_hash
     VARCHAR(64) ip_hash_key_version
   }
-  ORDER_ITEM_DOWNLOADS }o--|| BOOK_ASSETS : (asset_id)
-  ORDER_ITEM_DOWNLOADS }o--|| BOOKS : (book_id)
-  ORDER_ITEM_DOWNLOADS }o--|| ORDERS : (order_id)
+  ORDER_ITEM_DOWNLOADS }o--|| BOOK_ASSETS : "asset_id"
+  ORDER_ITEM_DOWNLOADS }o--|| BOOKS : "book_id"
+  ORDER_ITEM_DOWNLOADS }o--|| ORDERS : "order_id"
 ```
 
 ## Indexes
