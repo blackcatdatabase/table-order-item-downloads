@@ -2,7 +2,7 @@
 
 ![SQL](https://img.shields.io/badge/SQL-MySQL%208.0%2B-4479A1?logo=mysql&logoColor=white) ![License](https://img.shields.io/badge/license-BlackCat%20Proprietary-red) ![Status](https://img.shields.io/badge/status-stable-informational) ![Generated](https://img.shields.io/badge/generated-from%20schema--map-blue)
 
-> Schema package for table **order_item_downloads** (repo: $slug).
+> Schema package for table **order_item_downloads** (repo: `order-item-downloads`).
 
 ## Files
 ```
@@ -59,19 +59,19 @@ mysql -h 127.0.0.1 -P 3307 -u root -proot app < schema/030_foreign_keys.sql
 ```mermaid
 erDiagram
   ORDER_ITEM_DOWNLOADS {
-    BIGINT id PK
-    BIGINT order_id
-    BIGINT book_id
-    BIGINT asset_id
-    BINARY(32) download_token_hash
-    VARCHAR(64) token_key_version
-    VARCHAR(64) key_version
+    INT id PK
+    INT order_id
+    INT book_id
+    INT asset_id
+    BLOB download_token_hash
+    VARCHAR token_key_version
+    VARCHAR key_version
     INT max_uses
     INT used
-    DATETIME(6) expires_at
-    DATETIME(6) last_used_at
-    BINARY(32) ip_hash
-    VARCHAR(64) ip_hash_key_version
+    DATETIME expires_at
+    DATETIME last_used_at
+    BLOB ip_hash
+    VARCHAR ip_hash_key_version
   }
   ORDER_ITEM_DOWNLOADS }o--|| BOOK_ASSETS : "asset_id"
   ORDER_ITEM_DOWNLOADS }o--|| BOOKS : "book_id"
