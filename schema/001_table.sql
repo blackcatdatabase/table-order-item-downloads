@@ -1,4 +1,4 @@
--- Auto-generated from schema-map.psd1 @ 1e83bb6 (2025-10-21T10:18:36+02:00)
+-- Auto-generated from schema-map.psd1 (map@1e83bb6)
 -- table: order_item_downloads
 CREATE TABLE IF NOT EXISTS order_item_downloads (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
