@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace BlackCat\Database\Packages\OrderItemDownloads\Service;
 
-use BlackCat\Core\Database\Database;
+use BlackCat\Core\Database;
 use BlackCat\Database\Packages\OrderItemDownloads\Dto\OrderItemDownloadDto;
 use BlackCat\Database\Packages\OrderItemDownloads\Mapper\OrderItemDownloadDtoMapper;
 use BlackCat\Database\Packages\OrderItemDownloads\Repository\OrderItemDownloadRepository;
