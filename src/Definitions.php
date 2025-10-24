@@ -6,7 +6,7 @@ namespace BlackCat\Database\Packages\OrderItemDownloads;
 final class Definitions {
     // --- základní metadata ---
     public static function table(): string { return 'order_item_downloads'; }
-    public static function contractView(): string { return 'v_order_item_downloads_contract'; }
+    public static function contractView(): string { return 'vw_order_item_downloads'; }
     /** @return string[] */
     public static function columns(): array { return [ 'id', 'order_id', 'book_id', 'asset_id', 'download_token_hash', 'token_key_version', 'key_version', 'max_uses', 'used', 'expires_at', 'last_used_at', 'ip_hash', 'ip_hash_key_version' ]; }
     public static function pk(): string { return 'id'; }

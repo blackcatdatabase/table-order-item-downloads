@@ -1,5 +1,6 @@
--- Auto-generated from schema-map.psd1 (map@6cefe8e)
--- table: order_item_downloads
+-- Auto-generated from schema-map-mysql.psd1 (map@mtime:2025-10-24T09:13:35Z)
+-- engine: mysql
+-- table:  order_item_downloads
 CREATE TABLE IF NOT EXISTS order_item_downloads (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   order_id BIGINT UNSIGNED NOT NULL,

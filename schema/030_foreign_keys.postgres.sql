@@ -1,5 +1,6 @@
--- Auto-generated from schema-map.psd1 (map@6cefe8e)
--- table: order_item_downloads
+-- Auto-generated from schema-map-postgres.psd1 (map@mtime:2025-10-24T09:46:38Z)
+-- engine: postgres
+-- table:  order_item_downloads
 ALTER TABLE order_item_downloads ADD CONSTRAINT fk_oid_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE;
 
 ALTER TABLE order_item_downloads ADD CONSTRAINT fk_oid_book FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE;
