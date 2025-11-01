@@ -1,4 +1,4 @@
--- Auto-generated from schema-map-mysql.psd1 (map@38d5403)
+-- Auto-generated from schema-map-mysql.psd1 (map@c5e4097)
 -- engine: mysql
 -- table:  order_item_downloads
 ALTER TABLE order_item_downloads ADD CONSTRAINT fk_oid_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE;

@@ -1,4 +1,4 @@
--- Auto-generated from schema-map-postgres.psd1 (map@38d5403)
+-- Auto-generated from schema-map-postgres.psd1 (map@c5e4097)
 -- engine: postgres
 -- table:  order_item_downloads
 CREATE UNIQUE INDEX IF NOT EXISTS ux_oid_triplet ON order_item_downloads (order_id, book_id, asset_id);
