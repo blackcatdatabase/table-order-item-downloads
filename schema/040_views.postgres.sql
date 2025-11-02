@@ -1,4 +1,4 @@
--- Auto-generated from schema-views-postgres.psd1 (map@c5e4097)
+-- Auto-generated from schema-views-postgres.psd1 (map@db2f8b8)
 -- engine: postgres
 -- table:  order_item_downloads
 -- Contract view for [order_item_downloads]
@@ -14,12 +14,11 @@ SELECT
   max_uses,
   used,
   GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) AS uses_left,
-  CASE WHEN (GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) > 0
-        AND (expires_at IS NULL OR expires_at > now())) THEN 1 ELSE 0 END AS is_valid,
+  (GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) > 0 AND (expires_at IS NULL OR expires_at > now())) AS is_valid,
   expires_at,
   last_used_at,
   ip_hash,
-  encode(ip_hash, 'hex') AS ip_hash_hex,
+  UPPER(encode(ip_hash,'hex'))::char(32) AS ip_hash_hex,
   ip_hash_key_version,
-  encode(download_token_hash, 'hex') AS download_token_hash_hex
+  UPPER(encode(download_token_hash,'hex'))::char(64) AS download_token_hash_hex
 FROM order_item_downloads;
