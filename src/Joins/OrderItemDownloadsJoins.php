@@ -3,18 +3,31 @@ declare(strict_types=1);
 
 namespace BlackCat\Database\Packages\OrderItemDownloads\Joins;
 
+use BlackCat\Database\Support\SqlIdentifier as Ident;
+use BlackCat\Core\Database as Database;
+
 /**
- * Metody generované z cizích klíčů.
+ * Methods generated from foreign keys.
  *
- * Vracená struktura: [string $sqlJoinFragment, array $params]
- * Politika JOINů:
- *   - -JoinPolicy left  => vždy LEFT JOIN (výchozí)
- *   - -JoinPolicy all   => INNER JOIN, pokud VŠECHNY lokální FK sloupce jsou NOT NULL
- *   - -JoinPolicy any   => INNER JOIN, pokud ALESPOŇ JEDEN lokální FK sloupec je NOT NULL
+ * Return structure: [string $sqlJoinFragment, array $params]
+ * Join policy:
+ *   - -JoinPolicy left  => always LEFT JOIN (default)
+ *   - -JoinPolicy all   => INNER JOIN if ALL local FK columns are NOT NULL
+ *   - -JoinPolicy any   => INNER JOIN if AT LEAST ONE local FK column is NOT NULL
  */
 final class OrderItemDownloadsJoins {
 
-    /** @internal Stručná kontrola SQL aliasu (ochrana proti nesmyslným vstupům). */
+    /** @internal */
+    private function qi(?Database $db, string $ident): string {
+        return $db ? Ident::qi($db, $ident) : $ident;
+    }
+
+    /** @internal */
+    private function q(?Database $db, string $ident): string {
+        return $db ? Ident::q($db, $ident) : $ident;
+    }
+
+    /** @internal Short SQL alias validation (guards against invalid input). */
     private function assertAlias(string $s): string {
         if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $s)) {
             throw new \InvalidArgumentException("Invalid SQL alias: {$s}");
@@ -22,7 +35,7 @@ final class OrderItemDownloadsJoins {
         return $s;
     }
 
-    /** @internal Ověří oba aliasy a že se neshodují. */
+    /** @internal Validate both aliases and ensure they differ. */
     private function assertAliasPair(string $alias, string $as): array {
         $alias = $this->assertAlias($alias);
         $as    = $this->assertAlias($as);
@@ -34,31 +47,40 @@ final class OrderItemDownloadsJoins {
 
 
     /**
-     * FK: order_item_downloads -> orders
-     * LEFT JOIN vw_orders AS $as ON $as.id = $alias.order_id
-     * @return array{0:string,1:array}
+     * FK: order_item_downloads -> tenants
+     * LEFT JOIN vw_tenants AS $as ON $as.id = $alias.tenant_id
+     * @return array{0:string,1:array<string,mixed>}
      */
-    public function joinOrders(string $alias = 't', string $as = 'j0'): array {
+    public function joinTenants(string $alias = 't', string $as = 'j0'): array {
         [$alias, $as] = $this->assertAliasPair($alias, $as);
-        return [' LEFT JOIN vw_orders AS ' . $as . ' ON ' . $as . '.id = ' . $alias . '.order_id' . ' ', []];
+        return [' LEFT JOIN vw_tenants AS ' . $as . ' ON ' . $as . '.id = ' . $alias . '.tenant_id' . ' ', []];
+    }
+    /**
+     * FK: order_item_downloads -> orders
+     * LEFT JOIN vw_orders AS $as ON $as.tenant_id = $alias.tenant_id AND $as.id = $alias.order_id
+     * @return array{0:string,1:array<string,mixed>}
+     */
+    public function joinOrders(string $alias = 't', string $as = 'j1'): array {
+        [$alias, $as] = $this->assertAliasPair($alias, $as);
+        return [' LEFT JOIN vw_orders AS ' . $as . ' ON ' . $as . '.tenant_id = ' . $alias . '.tenant_id' . ' AND ' . $as . '.id = ' . $alias . '.order_id' . ' ', []];
     }
     /**
      * FK: order_item_downloads -> books
-     * LEFT JOIN vw_books AS $as ON $as.id = $alias.book_id
-     * @return array{0:string,1:array}
+     * LEFT JOIN vw_books AS $as ON $as.tenant_id = $alias.tenant_id AND $as.id = $alias.book_id
+     * @return array{0:string,1:array<string,mixed>}
      */
-    public function joinBooks(string $alias = 't', string $as = 'j1'): array {
+    public function joinBooks(string $alias = 't', string $as = 'j2'): array {
         [$alias, $as] = $this->assertAliasPair($alias, $as);
-        return [' LEFT JOIN vw_books AS ' . $as . ' ON ' . $as . '.id = ' . $alias . '.book_id' . ' ', []];
+        return [' LEFT JOIN vw_books AS ' . $as . ' ON ' . $as . '.tenant_id = ' . $alias . '.tenant_id' . ' AND ' . $as . '.id = ' . $alias . '.book_id' . ' ', []];
     }
     /**
      * FK: order_item_downloads -> book_assets
-     * LEFT JOIN vw_book_assets AS $as ON $as.id = $alias.asset_id
-     * @return array{0:string,1:array}
+     * LEFT JOIN vw_book_assets AS $as ON $as.tenant_id = $alias.tenant_id AND $as.id = $alias.asset_id
+     * @return array{0:string,1:array<string,mixed>}
      */
-    public function joinBookAssets(string $alias = 't', string $as = 'j2'): array {
+    public function joinBookAssets(string $alias = 't', string $as = 'j3'): array {
         [$alias, $as] = $this->assertAliasPair($alias, $as);
-        return [' LEFT JOIN vw_book_assets AS ' . $as . ' ON ' . $as . '.id = ' . $alias . '.asset_id' . ' ', []];
+        return [' LEFT JOIN vw_book_assets AS ' . $as . ' ON ' . $as . '.tenant_id = ' . $alias . '.tenant_id' . ' AND ' . $as . '.id = ' . $alias . '.asset_id' . ' ', []];
     }
 
 }
