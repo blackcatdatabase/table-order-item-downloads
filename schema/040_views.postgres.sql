@@ -6,6 +6,7 @@
 CREATE OR REPLACE VIEW vw_order_item_downloads AS
 SELECT
   id,
+  tenant_id,
   order_id,
   book_id,
   asset_id,
@@ -18,7 +19,8 @@ SELECT
   expires_at,
   last_used_at,
   ip_hash,
-  UPPER(encode(ip_hash,'hex'))::char(32) AS ip_hash_hex,
+  UPPER(encode(ip_hash,'hex')) AS ip_hash_hex,
   ip_hash_key_version,
-  UPPER(encode(download_token_hash,'hex'))::char(64) AS download_token_hash_hex
+  download_token_hash,
+  UPPER(encode(download_token_hash,'hex')) AS download_token_hash_hex
 FROM order_item_downloads;
