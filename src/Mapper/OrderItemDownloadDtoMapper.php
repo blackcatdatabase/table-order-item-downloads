@@ -20,9 +20,9 @@ final class OrderItemDownloadDtoMapper
     private const COL_TO_PROP = [ 'id' => 'id', 'tenant_id' => 'tenantId', 'order_id' => 'orderId', 'book_id' => 'bookId', 'asset_id' => 'assetId', 'download_token_hash' => 'downloadTokenHash', 'token_key_version' => 'tokenKeyVersion', 'key_version' => 'keyVersion', 'max_uses' => 'maxUses', 'used' => 'used', 'is_active' => 'isActive', 'expires_at' => 'expiresAt', 'last_used_at' => 'lastUsedAt', 'ip_hash' => 'ipHash', 'ip_hash_key_version' => 'ipHashKeyVersion' ];
 
     /** @var string[] */
-    private const BOOL_COLS   = [];
+    private const BOOL_COLS   = [ 'is_active' ];
     /** @var string[] */
-    private const INT_COLS    = [ 'id', 'tenant_id', 'order_id', 'book_id', 'asset_id', 'max_uses', 'used', 'is_active' ];
+    private const INT_COLS    = [ 'id', 'tenant_id', 'order_id', 'book_id', 'asset_id', 'max_uses', 'used' ];
     /** @var string[] */
     private const FLOAT_COLS  = [];
     /** @var string[] */

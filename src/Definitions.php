@@ -63,7 +63,7 @@ final class Definitions {
     public static function jsonColumns(): array { return []; }
 
     /** @return string[] List of numeric columns (generator heuristic; no runtime DB queries). */
-    public static function intColumns(): array { return [ 'id', 'tenant_id', 'order_id', 'book_id', 'asset_id', 'max_uses', 'used', 'is_active' ]; }
+    public static function intColumns(): array { return [ 'id', 'tenant_id', 'order_id', 'book_id', 'asset_id', 'max_uses', 'used' ]; }
 
     /** @return array<string,string> alias => column mapping (for input normalization) */
     public static function paramAliases(): array { return []; }

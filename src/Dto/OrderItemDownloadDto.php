@@ -20,7 +20,7 @@ final class OrderItemDownloadDto implements \JsonSerializable {
         public readonly ?string $keyVersion,
         public readonly int $maxUses,
         public readonly int $used,
-        public readonly ?int $isActive,
+        public readonly ?bool $isActive,
         public readonly \DateTimeImmutable $expiresAt,
         public readonly ?\DateTimeImmutable $lastUsedAt,
         #[\SensitiveParameter] public readonly ?string $ipHash,
