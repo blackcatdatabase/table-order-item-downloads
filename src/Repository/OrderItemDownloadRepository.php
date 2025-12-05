@@ -605,6 +605,20 @@ use OrderByTools, PkTools, RepositoryHelpers;
         if (!is_array($row)) { return null; }
         return $row['id'] ?? null;
     }
+    /** @return array<string,mixed>|\BlackCat\Database\Packages\OrderItemDownloads\Dto\OrderItemDownloadDto|null */
+    public function getByTenantIdAndId(int $tenantId, int $id, bool $asDto = false): array|\BlackCat\Database\Packages\OrderItemDownloads\Dto\OrderItemDownloadDto|null {
+        return $this->getByUnique([ 'tenant_id' => $tenantId, 'id' => $id ], $asDto);
+    }
+    public function existsByTenantIdAndId(int $tenantId, int $id): bool {
+        $where = 't.' . Ident::q($this->db, 'tenant_id') . ' = :uniq_tenant_id' . ' AND ' . 't.' . Ident::q($this->db, 'id') . ' = :uniq_id';
+        return $this->exists($where, [ 'uniq_tenant_id' => $tenantId, 'uniq_id' => $id ]);
+    }
+    /** @return int|string|null */
+    public function getIdByTenantIdAndId(int $tenantId, int $id) {
+        $row = $this->getByTenantIdAndId($tenantId, $id, false);
+        if (!is_array($row)) { return null; }
+        return $row['id'] ?? null;
+    }
 
     /** @return array<string,mixed>|\BlackCat\Database\Packages\OrderItemDownloads\Dto\OrderItemDownloadDto|null */
     public function getByIdForTenant(int|string $id, int|string $tenantId, bool $asDto = false): array|\BlackCat\Database\Packages\OrderItemDownloads\Dto\OrderItemDownloadDto|null {
