@@ -1,4 +1,4 @@
--- Auto-generated from schema-map-postgres.yaml (map@74ce4f4)
+-- Auto-generated from schema-map-postgres.yaml (map@sha1:F0EE237771FBA8DD7C4E886FF276F91A862C3718)
 -- engine: postgres
 -- table:  order_item_downloads
 
@@ -9,3 +9,7 @@ CREATE INDEX IF NOT EXISTS idx_oid_tenant_expires_active ON order_item_downloads
 CREATE INDEX IF NOT EXISTS idx_oid_download_token_hash ON order_item_downloads (download_token_hash);
 
 CREATE UNIQUE INDEX IF NOT EXISTS ux_oid_tenant_id ON order_item_downloads (tenant_id, id);
+
+CREATE INDEX IF NOT EXISTS idx_oid_expires_at ON order_item_downloads (expires_at);
+
+CREATE INDEX IF NOT EXISTS idx_oid_tenant_order ON order_item_downloads (tenant_id, order_id);
