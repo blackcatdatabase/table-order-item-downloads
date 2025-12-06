@@ -1,6 +1,7 @@
--- Auto-generated from schema-views-postgres.psd1 (map@62c9c93)
+-- Auto-generated from schema-views-postgres.yaml (map@sha1:EDC13878AE5F346E7EAD2CF0A484FEB7E68F6CDD)
 -- engine: postgres
 -- table:  order_item_downloads
+
 -- Contract view for [order_item_downloads]
 -- Hides download_token_hash; adds usage helpers & hex for ip_hash.
 CREATE OR REPLACE VIEW vw_order_item_downloads AS

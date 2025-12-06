@@ -32,15 +32,63 @@ final class OrderItemDownloadsModule implements ModuleInterface
         $table = SqlIdentifier::qi($db, $this->table());
         $view  = SqlIdentifier::qi($db, self::contractView());
 
+        if ($d->isMysql()) {
+            $createViewSql = <<<'SQL'
+CREATE OR REPLACE ALGORITHM=MERGE SQL SECURITY INVOKER VIEW vw_order_item_downloads AS
+SELECT
+  id,
+  tenant_id,
+  order_id,
+  book_id,
+  asset_id,
+  token_key_version,
+  key_version,
+  max_uses,
+  used,
+  GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) AS uses_left,
+  ((GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) > 0) AND (expires_at IS NULL OR expires_at > NOW())) AS is_valid,
+  expires_at,
+  last_used_at,
+  ip_hash,
+  CAST(LPAD(HEX(ip_hash), 64, '0')  AS CHAR(64)) AS ip_hash_hex,
+  ip_hash_key_version,
+  download_token_hash,
+  CAST(LPAD(HEX(download_token_hash), 64, '0')  AS CHAR(64)) AS download_token_hash_hex
+FROM order_item_downloads;
+SQL;
+        } else {
+            $createViewSql = <<<'SQL'
+CREATE OR REPLACE VIEW vw_order_item_downloads AS
+SELECT
+  id,
+  tenant_id,
+  order_id,
+  book_id,
+  asset_id,
+  token_key_version,
+  key_version,
+  max_uses,
+  used,
+  GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) AS uses_left,
+  (GREATEST(0, COALESCE(max_uses,0) - COALESCE(used,0)) > 0 AND (expires_at IS NULL OR expires_at > now())) AS is_valid,
+  expires_at,
+  last_used_at,
+  ip_hash,
+  UPPER(encode(ip_hash,'hex')) AS ip_hash_hex,
+  ip_hash_key_version,
+  download_token_hash,
+  UPPER(encode(download_token_hash,'hex')) AS download_token_hash_hex
+FROM order_item_downloads;
+SQL;
+        }
+
         if (\class_exists('\\BlackCat\\Database\\Support\\DdlGuard')) {
-            (new \BlackCat\Database\Support\DdlGuard($db, $d))->applyCreateView(
-                "CREATE VIEW {$view} AS SELECT * FROM {$table}"
-            );
+            (new \BlackCat\Database\Support\DdlGuard($db, $d))->applyCreateView($createViewSql);
         } else {
             // Prefer CREATE OR REPLACE VIEW (gentle on dependencies)
-            $sql = "CREATE OR REPLACE VIEW {$view} AS SELECT * FROM {$table}";
-            $db->exec($sql);
+            $db->exec($createViewSql);
         }
+
     }
 
     public function upgrade(Database $db, SqlDialect $d, string $from): void
@@ -67,8 +115,15 @@ final class OrderItemDownloadsModule implements ModuleInterface
         $hasTable = SchemaIntrospector::hasTable($db, $d, $table);
         $hasView  = SchemaIntrospector::hasView($db, $d, $view);
 
-        // Quick index/FK check – generator injects names (case-sensitive per DB)
-        $expectedIdx = [ 'idx_oid_tenant_expires_active', 'ux_oid_tenant_triplet' ];
+        // Quick index/FK check â€“ generator injects names (case-sensitive per DB)
+        $expectedIdx = [ 'idx_oid_download_token_hash', 'idx_oid_tenant_expires_active', 'ux_oid_tenant_id', 'ux_oid_tenant_triplet' ];
+        if ($d->isMysql()) {
+            // Drop PG-only index naming patterns (e.g., GIN/GiST)
+            $expectedIdx = array_values(array_filter(
+                $expectedIdx,
+                static fn(string $n): bool => !str_starts_with($n, 'gin_') && !str_starts_with($n, 'gist_')
+            ));
+        }
         $expectedFk  = [ 'fk_oid_asset', 'fk_oid_book', 'fk_oid_order', 'fk_oid_tenant' ];
 
         $haveIdx = $hasTable ? SchemaIntrospector::listIndexes($db, $d, $table)     : [];
@@ -94,7 +149,7 @@ final class OrderItemDownloadsModule implements ModuleInterface
             'columns'     => Definitions::columns(),
             'version'     => $this->version(),
             'dialects'    => [ 'mysql', 'postgres' ],
-            'indexes'     => [ 'idx_oid_tenant_expires_active', 'ux_oid_tenant_triplet' ],
+            'indexes'     => [ 'idx_oid_download_token_hash', 'idx_oid_tenant_expires_active', 'ux_oid_tenant_id', 'ux_oid_tenant_triplet' ],
             'foreignKeys' => [ 'fk_oid_asset', 'fk_oid_book', 'fk_oid_order', 'fk_oid_tenant' ],
         ];
     }
