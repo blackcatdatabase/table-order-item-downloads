@@ -7,17 +7,17 @@ Per-order download entitlements for digital items. UNIQUE (order_id, book_id, as
 | --- | --- | --- | --- | --- |
 | asset_id | BIGINT | NO |  | Asset (FK book_assets.id). |
 | book_id | BIGINT | NO |  | Book (FK books.id). |
-| download_token_hash | BYTEA | YES |  | Hashed download token (dedupe/lookup). |
-| expires_at | TIMESTAMPTZ(6) | NO |  | Expiry timestamp (UTC). |
+| download_token_hash | BINARY(32) | YES |  | Hashed download token (dedupe/lookup). |
+| expires_at | DATETIME(6) | NO |  | Expiry timestamp (UTC). |
 | id | BIGINT | NO |  | Surrogate primary key. |
-| ip_hash | BYTEA | YES |  | Hashed IP of last usage. |
+| ip_hash | BINARY(32) | YES |  | Hashed IP of last usage. |
 | ip_hash_key_version | VARCHAR(64) | YES |  | Key version for ip_hash. |
 | key_version | VARCHAR(64) | YES |  | Content encryption key version. |
-| last_used_at | TIMESTAMPTZ(6) | YES |  | Last download timestamp (UTC). |
-| max_uses | INTEGER | NO |  | Max allowed downloads. |
+| last_used_at | DATETIME(6) | YES |  | Last download timestamp (UTC). |
+| max_uses | INT | NO |  | Max allowed downloads. |
 | order_id | BIGINT | NO |  | Order (FK orders.id). |
 | token_key_version | VARCHAR(64) | YES |  | Key version used for download_token_hash. |
-| used | INTEGER | NO | 0 | Number of uses so far. |
+| used | INT | NO | 0 | Number of uses so far. |
 
 ## Engine Details
 
@@ -78,5 +78,5 @@ Foreign keys:
 ## Views
 | View | Engine | Flags | File |
 | --- | --- | --- | --- |
-| vw_order_item_downloads | mysql | algorithm=MERGE, security=INVOKER | [packages\order-item-downloads\schema\040_views.mysql.sql](https://github.com/blackcatacademy/blackcat-database/packages/order-item-downloads/schema/040_views.mysql.sql) |
-| vw_order_item_downloads | postgres |  | [packages\order-item-downloads\schema\040_views.postgres.sql](https://github.com/blackcatacademy/blackcat-database/packages/order-item-downloads/schema/040_views.postgres.sql) |
+| vw_order_item_downloads | mysql | algorithm=MERGE, security=INVOKER | [schema\040_views.mysql.sql](schema\040_views.mysql.sql) |
+| vw_order_item_downloads | postgres |  | [schema\040_views.postgres.sql](schema\040_views.postgres.sql) |
