@@ -78,5 +78,5 @@ Foreign keys:
 ## Views
 | View | Engine | Flags | File |
 | --- | --- | --- | --- |
-| vw_order_item_downloads | mysql | algorithm=MERGE, security=INVOKER | [schema\040_views.mysql.sql](schema\040_views.mysql.sql) |
-| vw_order_item_downloads | postgres |  | [schema\040_views.postgres.sql](schema\040_views.postgres.sql) |
+| vw_order_item_downloads | mysql | algorithm=MERGE, security=INVOKER | [../schema/040_views.mysql.sql](../schema/040_views.mysql.sql) |
+| vw_order_item_downloads | postgres |  | [../schema/040_views.postgres.sql](../schema/040_views.postgres.sql) |
