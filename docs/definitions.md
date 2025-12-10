@@ -7,17 +7,17 @@ Per-order download entitlements for digital items. UNIQUE (order_id, book_id, as
 | --- | --- | --- | --- | --- |
 | asset_id | BIGINT | NO |  | Asset (FK book_assets.id). |
 | book_id | BIGINT | NO |  | Book (FK books.id). |
-| download_token_hash | BINARY(32) | YES |  | Hashed download token (dedupe/lookup). |
-| expires_at | DATETIME(6) | NO |  | Expiry timestamp (UTC). |
+| download_token_hash | mysql: BINARY(32) / postgres: BYTEA | YES |  | Hashed download token (dedupe/lookup). |
+| expires_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO |  | Expiry timestamp (UTC). |
 | id | BIGINT | NO |  | Surrogate primary key. |
-| ip_hash | BINARY(32) | YES |  | Hashed IP of last usage. |
+| ip_hash | mysql: BINARY(32) / postgres: BYTEA | YES |  | Hashed IP of last usage. |
 | ip_hash_key_version | VARCHAR(64) | YES |  | Key version for ip_hash. |
 | key_version | VARCHAR(64) | YES |  | Content encryption key version. |
-| last_used_at | DATETIME(6) | YES |  | Last download timestamp (UTC). |
-| max_uses | INT | NO |  | Max allowed downloads. |
+| last_used_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | YES |  | Last download timestamp (UTC). |
+| max_uses | mysql: INT / postgres: INTEGER | NO |  | Max allowed downloads. |
 | order_id | BIGINT | NO |  | Order (FK orders.id). |
 | token_key_version | VARCHAR(64) | YES |  | Key version used for download_token_hash. |
-| used | INT | NO | 0 | Number of uses so far. |
+| used | mysql: INT / postgres: INTEGER | NO | 0 | Number of uses so far. |
 
 ## Engine Details
 
