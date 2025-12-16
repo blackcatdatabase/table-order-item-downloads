@@ -41,11 +41,11 @@ final class Criteria extends BaseCriteria
         return [ 'token_key_version', 'key_version', 'ip_hash_key_version' ];
     }
 
-/** Columns allowed in ORDER BY (falls back to filterable() when empty). */
-protected function sortable(): array
-{
-    return [ 'id', 'tenant_id', 'order_id', 'book_id', 'asset_id', 'token_key_version', 'key_version', 'max_uses', 'used', 'is_active', 'expires_at', 'last_used_at', 'ip_hash_key_version' ];
-}
+    /** Columns allowed in ORDER BY (falls back to filterable() when empty). */
+    protected function sortable(): array
+    {
+        return [ 'id', 'tenant_id', 'order_id', 'book_id', 'asset_id', 'token_key_version', 'key_version', 'max_uses', 'used', 'is_active', 'expires_at', 'last_used_at', 'ip_hash_key_version' ];
+    }
 
     /**
      * Whitelist of joinable entities (for safe ->join() usage):
