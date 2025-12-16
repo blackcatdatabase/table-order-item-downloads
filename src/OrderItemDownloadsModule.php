@@ -115,8 +115,8 @@ SQL;
         $hasTable = SchemaIntrospector::hasTable($db, $d, $table);
         $hasView  = SchemaIntrospector::hasView($db, $d, $view);
 
-        // Quick index/FK check â€“ generator injects names (case-sensitive per DB)
-        $expectedIdx = [ 'idx_oid_download_token_hash', 'idx_oid_tenant_expires_active', 'ux_oid_tenant_id', 'ux_oid_tenant_triplet' ];
+        // Quick index/FK check - generator injects names (case-sensitive per DB)
+        $expectedIdx = [ 'idx_oid_download_token_hash', 'idx_oid_expires_at', 'idx_oid_tenant_expires_active', 'idx_oid_tenant_order', 'ux_oid_tenant_id', 'ux_oid_tenant_triplet' ];
         if ($d->isMysql()) {
             // Drop PG-only index naming patterns (e.g., GIN/GiST)
             $expectedIdx = array_values(array_filter(
@@ -149,7 +149,7 @@ SQL;
             'columns'     => Definitions::columns(),
             'version'     => $this->version(),
             'dialects'    => [ 'mysql', 'postgres' ],
-            'indexes'     => [ 'idx_oid_download_token_hash', 'idx_oid_tenant_expires_active', 'ux_oid_tenant_id', 'ux_oid_tenant_triplet' ],
+            'indexes'     => [ 'idx_oid_download_token_hash', 'idx_oid_expires_at', 'idx_oid_tenant_expires_active', 'idx_oid_tenant_order', 'ux_oid_tenant_id', 'ux_oid_tenant_triplet' ],
             'foreignKeys' => [ 'fk_oid_asset', 'fk_oid_book', 'fk_oid_order', 'fk_oid_tenant' ],
         ];
     }
