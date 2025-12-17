@@ -252,6 +252,7 @@ use OrderByTools, PkTools, RepositoryHelpers;
           ));
           if (!$rows) { return 0; }
 
+          /** @var list<string> $updCols */
           $updCols = [ 'download_token_hash', 'token_key_version', 'key_version', 'max_uses', 'used', 'expires_at', 'last_used_at', 'ip_hash', 'ip_hash_key_version' ];
           if ($updCols && $soft && !in_array($soft, $updCols, true)) { $updCols[] = $soft; }
 
