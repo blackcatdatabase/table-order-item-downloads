@@ -3,21 +3,24 @@
 Per-order download entitlements for digital items. UNIQUE (order_id, book_id, asset_id).
 
 ## Columns
-| Column | Type | Null | Default | Description |
-| --- | --- | --- | --- | --- |
-| id | BIGINT | NO |  | Surrogate primary key. |
-| order_id | BIGINT | NO |  | Order (FK orders.id). |
-| book_id | BIGINT | NO |  | Book (FK books.id). |
-| asset_id | BIGINT | NO |  | Asset (FK book_assets.id). |
-| download_token_hash | mysql: BINARY(32) / postgres: BYTEA | YES |  | Hashed download token (dedupe/lookup). |
-| token_key_version | VARCHAR(64) | YES |  | Key version used for download_token_hash. |
-| key_version | VARCHAR(64) | YES |  | Content encryption key version. |
-| max_uses | mysql: INT / postgres: INTEGER | NO |  | Max allowed downloads. |
-| used | mysql: INT / postgres: INTEGER | NO | 0 | Number of uses so far. |
-| expires_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO |  | Expiry timestamp (UTC). |
-| last_used_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | YES |  | Last download timestamp (UTC). |
-| ip_hash | mysql: BINARY(32) / postgres: BYTEA | YES |  | Hashed IP of last usage. |
-| ip_hash_key_version | VARCHAR(64) | YES |  | Key version for ip_hash. |
+| Column | Type | Null | Default | Description | Crypto |
+| --- | --- | --- | --- | --- | --- |
+| id | BIGINT | NO |  | Surrogate primary key. |  |
+| tenant_id | BIGINT | NO |  | Owning tenant (FK tenants.id). |  |
+| order_id | BIGINT | NO |  | Order (FK orders.id). |  |
+| book_id | BIGINT | NO |  | Book (FK books.id). |  |
+| asset_id | BIGINT | NO |  | Asset (FK book_assets.id). |  |
+| download_token_hash | mysql: BINARY(32) / postgres: BYTEA | YES |  | Hashed download token (dedupe/lookup). | `hmac`<br/>ctx: `db.hmac.order_item_downloads.download_token_hash`<br/>kv: `token_key_version` |
+| token_key_version | VARCHAR(64) | YES |  | Key version used for download_token_hash. | key version for: `download_token_hash` |
+| key_version | VARCHAR(64) | YES |  | Content encryption key version. |  |
+| max_uses | mysql: INT / postgres: INTEGER | NO |  | Max allowed downloads. |  |
+| used | mysql: INT / postgres: INTEGER | NO | 0 | Number of uses so far. |  |
+| is_active | mysql: TINYINT(1) / postgres: BOOLEAN | YES |  | Generated flag (used < max_uses). |  |
+| expires_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO |  | Expiry timestamp (UTC). |  |
+| last_used_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | YES |  | Last download timestamp (UTC). |  |
+| ip_hash | mysql: BINARY(32) / postgres: BYTEA | YES |  | Hashed IP of last usage. | `hmac`<br/>ctx: `db.hmac.order_item_downloads.ip_hash`<br/>kv: `ip_hash_key_version` |
+| ip_hash_key_version | VARCHAR(64) | YES |  | Key version for ip_hash. | key version for: `ip_hash` |
+| version |  | YES |  | Optimistic locking version counter. |  |
 
 ## Engine Details
 
