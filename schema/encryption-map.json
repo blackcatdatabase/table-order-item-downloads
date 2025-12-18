@@ -1,0 +1,59 @@
+{
+  "tables": {
+    "order_item_downloads": {
+      "columns": {
+        "asset_id": {
+          "strategy": "passthrough"
+        },
+        "book_id": {
+          "strategy": "passthrough"
+        },
+        "download_token_hash": {
+          "context": "db.hmac.order_item_downloads.download_token_hash",
+          "key_version_column": "token_key_version",
+          "strategy": "hmac",
+          "write_key_version": true
+        },
+        "expires_at": {
+          "strategy": "passthrough"
+        },
+        "id": {
+          "strategy": "passthrough"
+        },
+        "ip_hash": {
+          "context": "db.hmac.order_item_downloads.ip_hash",
+          "key_version_column": "ip_hash_key_version",
+          "strategy": "hmac",
+          "write_key_version": true
+        },
+        "ip_hash_key_version": {
+          "strategy": "passthrough"
+        },
+        "is_active": {
+          "strategy": "passthrough"
+        },
+        "key_version": {
+          "strategy": "passthrough"
+        },
+        "last_used_at": {
+          "strategy": "passthrough"
+        },
+        "max_uses": {
+          "strategy": "passthrough"
+        },
+        "order_id": {
+          "strategy": "passthrough"
+        },
+        "tenant_id": {
+          "strategy": "passthrough"
+        },
+        "token_key_version": {
+          "strategy": "passthrough"
+        },
+        "used": {
+          "strategy": "passthrough"
+        }
+      }
+    }
+  }
+}
